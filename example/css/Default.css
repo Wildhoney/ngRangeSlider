@@ -3,3 +3,31 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    padding: 25px;
+}
+
+section.range-slider {
+    overflow: hidden;
+    position: relative;
+    width: 200px;
+    height: 35px;
+}
+
+section.range-slider input {
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    width: 200px;
+    border: 1px solid green;
+}
+
+section.range-slider input::-webkit-slider-thumb {
+    pointer-events: all;
+    position: relative;
+    z-index: 1;
+    outline: 0;
+}

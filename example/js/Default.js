@@ -9,6 +9,12 @@
          */
         $scope.range = { from: 0, to: 10 };
 
+        /**
+         * @property max
+         * @type {Number}
+         */
+        $scope.max = 15;
+
     });
 
 })(window.angular);

@@ -17,7 +17,9 @@
 </head>
 <body ng-app="rangeApp" ng-controller="IndexController">
 
-    <range-slider ng-model="range" min="0" max="15"></range-slider>
+    <section data-range-slider class="range-slider" ng-model="range" min="0" max="max"></section>
+
+    <code>Current model: {{range}}</code>
 
 </body>
 </html>
