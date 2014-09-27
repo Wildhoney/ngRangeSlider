@@ -1,0 +1,25 @@
+{
+  "name": "ng-range-slider",
+  "version": "0.1.0",
+  "description": "Range slider utilising the native HTML5 input range elements.",
+  "main": "dist/ng-range-slider.min.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wildhoney/ngRangeSlider.git"
+  },
+  "keywords": [
+    "range",
+    "slider",
+    "angular",
+    "module"
+  ],
+  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wildhoney/ngRangeSlider/issues"
+  },
+  "homepage": "https://github.com/Wildhoney/ngRangeSlider"
+}
