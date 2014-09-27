@@ -26,5 +26,8 @@
     "gulp": "^3.8.8",
     "gulp-karma": "0.0.4",
     "karma": "^0.12.23"
+  },
+  "dependencies": {
+    "express": "^4.9.5"
   }
 }
