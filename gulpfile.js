@@ -11,7 +11,7 @@
         karma  = require('gulp-karma'),
         jshint = require('gulp-jshint');
 
-    gulp.task('build', function(){
+    gulp.task('build', function gulpBuild(){
         gulp.src(mainModule)
             .pipe(rename(devDist))
             .pipe(gulp.dest('dist'))
@@ -21,7 +21,7 @@
             .pipe(gulp.dest('dist'))
     });
 
-    gulp.task('karma', function() {
+    gulp.task('karma', function gulpKarma() {
 
         var testFiles = [
             'example/js/vendor/angular/angular.js',
@@ -33,12 +33,12 @@
         return gulp.src(testFiles).pipe(karma({
                 configFile: 'karma.conf.js',
                 action: 'run'
-            })).on('error', function(error) {
+            })).on('error', function onError(error) {
                 throw error;
             });
     });
 
-    gulp.task('hint', function() {
+    gulp.task('hint', function gulpHint() {
 
         return gulp.src(mainModule)
             .pipe(jshint('.jshintrc'))

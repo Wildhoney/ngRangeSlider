@@ -46,7 +46,7 @@
              * @param scope {Object}
              * @return {void}
              */
-            link: function link(scope) {
+            link: function link(scope, element) {
 
                 /**
                  * @property _model
@@ -68,6 +68,38 @@
                  * @private
                  */
                 scope._max = scope.max || 100;
+
+                /**
+                 * Force the re-evaluation of the input slider values.
+                 *
+                 * @method _reevaluateInputs
+                 * @return {void}
+                 * @private
+                 */
+                var _reevaluateInputs = function _reevaluateInputs() {
+
+                    var inputElements = element.find('input');
+
+                    $angular.forEach(inputElements, function forEach(inputElement, index) {
+
+                        inputElement = $angular.element(inputElement);
+
+                        inputElement.val('');
+                        inputElement.val(scope._model[index]);
+
+                    });
+
+                };
+
+                scope.$watch('min', function alteredMin() {
+                    scope._min = scope.min;
+                    _reevaluateInputs();
+                });
+
+                scope.$watch('max', function alteredMax() {
+                    scope._max = scope.max;
+                    _reevaluateInputs();
+                });
 
                 /**
                  * Responsible for determining which slider the user was moving, which help us resolve
