@@ -16,7 +16,7 @@ ngRangeSlider
 
 Module was created due to an observation on the limitation of `input range` elements &ndash; they are restricted to only one handle. Essentially `ngRangeSlider` is a HTML5 implementation of [jQuery's range slider](http://jqueryui.com/slider/#range).
 
-<img src="http://i.imgur.com/MlXBnBx.png" alt="Screenshot" width="230" />
+<img src="http://i.imgur.com/MlXBnBx.png" alt="Screenshot" width="280" />
 
 ---
 
