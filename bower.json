@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "angular": "~1.2.25",
-    "angular-mocks": "~1.2.25"
+    "angular-mocks": "~1.2.25",
+    "underscore": "~1.7.0"
   }
 }
