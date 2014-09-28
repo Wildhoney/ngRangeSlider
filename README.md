@@ -44,3 +44,12 @@ Each and every time the value of the range has been updated the `ng-model` will 
 Current range is {{range.from}} to {{range.to}}!
 ```
 
+# Throttling
+
+`ngRangeSlider` also supports the concept of event throttling. For example, when you're dragging the slider, the `ng-model` is updated with every change. However when you're implementing a feature such as fast filtering, you may wish to throttle the updating of `ng-model` to prevent excessive AJAX requests and/or WebSocket events. By specifying the `throttle` attribute in milliseconds you can achieve this:
+
+```html
+<section data-range-slider ng-model="range" throttle="1500"></section>
+```
+
+In the above example, the `ng-model` will only be updated every **1,500 milliseconds**. You need to have either [Underscore.js](http://underscorejs.org/) or [Lo-Dash](http://lodash.com/) installed.
