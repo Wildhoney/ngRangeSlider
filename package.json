@@ -4,7 +4,9 @@
   "description": "Range slider utilising the native HTML5 input range elements.",
   "main": "dist/ng-range-slider.min.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "start": "node example/server/default.js",
+    "postinstall": "bower install; gulp build"
   },
   "repository": {
     "type": "git",
