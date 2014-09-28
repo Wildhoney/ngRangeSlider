@@ -6,6 +6,7 @@
 
     <!-- Dependencies! -->
     <script type="text/javascript" src="js/vendor/angular/angular.js"></script>
+    <script type="text/javascript" src="js/vendor/underscore/underscore.js"></script>
     <script type="text/javascript" src="js/vendor/ng-range-slider/ng-range-slider.js"></script>
 
     <!-- Application! -->
@@ -17,9 +18,9 @@
 </head>
 <body ng-app="rangeApp" ng-controller="IndexController">
 
-    <section data-range-slider class="range-slider" ng-model="range" step="1" min="0" max="max"></section>
+    <section data-range-slider class="range-slider" ng-model="range" min="0" max="max"></section>
 
-    <code ng-click="max = 20">Current model: {{range}}</code>
+    <code>Current model: {{range}}</code>
 
 </body>
 </html>
