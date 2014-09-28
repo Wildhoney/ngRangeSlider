@@ -1,4 +1,4 @@
-(function($angular) {
+(function($angular, _) {
 
     "use strict";
 
@@ -37,6 +37,17 @@
 
                 };
 
+                /**
+                 * Determines whether Underscore/Lo-Dash is available, and the `throttle` method is available
+                 * on the object.
+                 *
+                 * @method supportThrottle
+                 * @return {Boolean}
+                 */
+                $scope.supportThrottle = function supportThrottle() {
+                    return ($angular.isDefined(_) && typeof _.throttle === 'function');
+                };
+
             }],
 
             /**
@@ -63,6 +74,7 @@
              */
             scope: {
                 model: '=ngModel',
+                throttle: '=',
                 step: '=',
                 max: '=',
                 min: '='
@@ -146,6 +158,42 @@
                  */
                 scope._which = 0;
 
+                /**
+                 * @property isThrottling
+                 * @type {Boolean}
+                 */
+                var isThrottling = false;
+
+                /**
+                 * @method _alterModel
+                 * @param model {Object}
+                 * @return {void}
+                 * @private
+                 */
+                var _alterModel = function _alterModel(model) {
+
+                    // Voila!
+                    scope.model = { from: model[0], to: model[1] };
+
+                    if (!scope.$root.$$phase) {
+
+                        // Sometimes we're outside of the Angular run-loop, and therefore need to manually
+                        // invoke the `apply` method!
+                        scope.$apply();
+
+                    }
+
+                };
+
+                if (scope.throttle && scope.supportThrottle()) {
+
+                    // Use the throttled version if we support it, and the developer has defined
+                    // the throttle attribute.
+                    isThrottling = true;
+                    _alterModel  = _.throttle(_alterModel, $window.parseInt(scope.throttle));
+
+                }
+
                 // Observe the `_model` for any changes.
                 scope.$watchCollection('_model', function modelChanged() {
 
@@ -163,7 +211,7 @@
                     }
 
                     // Update the model!
-                    scope.model = { from: scope._model[0], to: scope._model[1] };
+                    _alterModel(scope._model);
 
                 });
 
@@ -173,4 +221,4 @@
 
     }]);
 
-})(window.angular);
+})(window.angular, window._);
