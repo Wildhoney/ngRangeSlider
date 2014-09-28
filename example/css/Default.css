@@ -22,7 +22,7 @@ section.range-slider input {
     top: 0;
     pointer-events: none;
     width: 200px;
-    border: 1px solid green;
+    outline: none;
 }
 
 section.range-slider input::-webkit-slider-thumb {
@@ -30,4 +30,26 @@ section.range-slider input::-webkit-slider-thumb {
     position: relative;
     z-index: 1;
     outline: 0;
+}
+
+section.range-slider input::-moz-range-track {
+    position: relative;
+    z-index: -1;
+    background-color: rgba(0, 0, 0, .15);
+    border: 0;
+}
+
+section.range-slider input::-moz-range-thumb {
+    pointer-events: all;
+    position: relative;
+    z-index: 10;
+    -moz-appearance: none;
+    background: linear-gradient(to bottom, #ededed 0%, #dedede 100%);
+    width: 11px;
+}
+
+section.range-slider input:last-of-type::-moz-range-track {
+    -moz-appearance: none;
+    background: none transparent;
+    border: 0;
 }
