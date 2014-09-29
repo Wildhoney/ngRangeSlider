@@ -22,4 +22,25 @@ Module was created due to an observation on the limitation of `input range` elem
 
 # Getting Started
 
-`...`
+With `ngRangeSlider` the CSS is just as important as the JavaScript. Without the CSS the `input range` elements will still have a direct relationship, but they will not be stacked.
+
+For the styles please refer to the `Default.css` document in the example, as this provides a fairly comprehensive list of the styles to be applied to the `input range` elements.
+
+`ngRangeSlider` is a typical Angular directive which requires an `ng-model` attribute which it will write the range to in the form of `{ from: 0, to: 10 }`.
+
+```html
+<section data-range-slider ng-model="range"></section>
+```
+
+You're also able to apply the `min` and `max` attributes &ndash; and these may also be changed after the directive has been initialised.
+
+```html
+<section data-range-slider ng-model="range" min="minValue" max="maxValue"></section>
+```
+
+Each and every time the value of the range has been updated the `ng-model` will be updated. In our case using the example above it will write to `$scope.range`.
+
+```html
+Current range is {{range.from}} to {{range.to}}!
+```
+
