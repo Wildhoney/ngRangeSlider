@@ -43,7 +43,7 @@
              * @property template
              * @type {String}
              */
-            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" /></section>',
+            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /></section>',
 
             /**
              * @property replace
@@ -63,6 +63,7 @@
              */
             scope: {
                 model: '=ngModel',
+                step: '=',
                 max: '=',
                 min: '='
             },
@@ -95,6 +96,13 @@
                  * @private
                  */
                 scope._max = scope.max || 100;
+
+                /**
+                 * @property _step
+                 * @type {Number}
+                 * @private
+                 */
+                scope._step = scope.step || 1;
 
                 /**
                  * Force the re-evaluation of the input slider values.
