@@ -14,10 +14,36 @@
             restrict: 'EA',
 
             /**
+             * @method controller
+             * @param $scope {Object}
+             * @return {void}
+             */
+            controller: ['$scope', function controller($scope) {
+
+                /**
+                 * @method iter
+                 * @param max {Number}
+                 * @return {Array}
+                 */
+                $scope.iter = function iter(max) {
+
+                    var iterator = [];
+
+                    for (var index = 0; index <= max; index++) {
+                        iterator.push(index);
+                    }
+
+                    return iterator;
+
+                };
+
+            }],
+
+            /**
              * @property template
              * @type {String}
              */
-            template: '<section><input type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" /></section>',
+            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /></section>',
 
             /**
              * @property replace
@@ -37,6 +63,7 @@
              */
             scope: {
                 model: '=ngModel',
+                step: '=',
                 max: '=',
                 min: '='
             },
@@ -44,9 +71,10 @@
             /**
              * @method link
              * @param scope {Object}
+             * @param element {Object}
              * @return {void}
              */
-            link: function link(scope) {
+            link: function link(scope, element) {
 
                 /**
                  * @property _model
@@ -68,6 +96,45 @@
                  * @private
                  */
                 scope._max = scope.max || 100;
+
+                /**
+                 * @property _step
+                 * @type {Number}
+                 * @private
+                 */
+                scope._step = scope.step || 1;
+
+                /**
+                 * Force the re-evaluation of the input slider values.
+                 *
+                 * @method _reevaluateInputs
+                 * @return {void}
+                 * @private
+                 */
+                var _reevaluateInputs = function _reevaluateInputs() {
+
+                    var inputElements = element.find('input');
+
+                    $angular.forEach(inputElements, function forEach(inputElement, index) {
+
+                        inputElement = $angular.element(inputElement);
+
+                        inputElement.val('');
+                        inputElement.val(scope._model[index]);
+
+                    });
+
+                };
+
+                scope.$watch('min', function alteredMin() {
+                    scope._min = scope.min;
+                    _reevaluateInputs();
+                });
+
+                scope.$watch('max', function alteredMax() {
+                    scope._max = scope.max;
+                    _reevaluateInputs();
+                });
 
                 /**
                  * Responsible for determining which slider the user was moving, which help us resolve
