@@ -14,10 +14,36 @@
             restrict: 'EA',
 
             /**
+             * @method controller
+             * @param $scope {Object}
+             * @return {void}
+             */
+            controller: ['$scope', function controller($scope) {
+
+                /**
+                 * @method iter
+                 * @param max {Number}
+                 * @return {Array}
+                 */
+                $scope.iter = function iter(max) {
+
+                    var iterator = [];
+
+                    for (var index = 0; index <= max; index++) {
+                        iterator.push(index);
+                    }
+
+                    return iterator;
+
+                };
+
+            }],
+
+            /**
              * @property template
              * @type {String}
              */
-            template: '<section><input type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" /></section>',
+            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" /></section>',
 
             /**
              * @property replace
@@ -44,6 +70,7 @@
             /**
              * @method link
              * @param scope {Object}
+             * @param element {Object}
              * @return {void}
              */
             link: function link(scope, element) {
