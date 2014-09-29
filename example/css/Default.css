@@ -16,13 +16,14 @@ section.range-slider {
 }
 
 section.range-slider input {
+    pointer-events: none;
     position: absolute;
     overflow: hidden;
     left: 0;
     top: 0;
-    pointer-events: none;
     width: 200px;
     outline: none;
+    height: 18px;
 }
 
 section.range-slider input::-webkit-slider-thumb {
@@ -32,13 +33,6 @@ section.range-slider input::-webkit-slider-thumb {
     outline: 0;
 }
 
-section.range-slider input::-moz-range-track {
-    position: relative;
-    z-index: -1;
-    background-color: rgba(0, 0, 0, .15);
-    border: 0;
-}
-
 section.range-slider input::-moz-range-thumb {
     pointer-events: all;
     position: relative;
@@ -46,6 +40,13 @@ section.range-slider input::-moz-range-thumb {
     -moz-appearance: none;
     background: linear-gradient(to bottom, #ededed 0%, #dedede 100%);
     width: 11px;
+}
+
+section.range-slider input::-moz-range-track {
+    position: relative;
+    z-index: -1;
+    background-color: rgba(0, 0, 0, .15);
+    border: 0;
 }
 
 section.range-slider input:last-of-type::-moz-range-track {
