@@ -1,7 +1,7 @@
 {
   "name": "ng-range-slider",
   "version": "0.1.6",
-  "description": "Range slider utilising the native HTML5 input range elements.",
+  "description": "Multi-handle range slider utilising the native HTML5 input range elements.",
   "main": "dist/ng-range-slider.min.js",
   "scripts": {
     "test": "gulp test",

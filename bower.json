@@ -5,7 +5,7 @@
   "authors": [
     "Adam Timberlake <adam.timberlake@gmail.com>"
   ],
-  "description": "Range slider utilising the native HTML5 input range elements.",
+  "description": "Multi-handle range slider utilising the native HTML5 input range elements.",
   "main": "dist/ng-range-slider.min.js",
   "keywords": [
     "range",
