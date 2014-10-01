@@ -159,12 +159,6 @@
                 scope._which = 0;
 
                 /**
-                 * @property isThrottling
-                 * @type {Boolean}
-                 */
-                var isThrottling = false;
-
-                /**
                  * @method _alterModel
                  * @param model {Object}
                  * @return {void}
@@ -189,8 +183,7 @@
 
                     // Use the throttled version if we support it, and the developer has defined
                     // the throttle attribute.
-                    isThrottling = true;
-                    _alterModel  = _.throttle(_alterModel, $window.parseInt(scope.throttle));
+                    _alterModel = _.throttle(_alterModel, $window.parseInt(scope.throttle));
 
                 }
 
