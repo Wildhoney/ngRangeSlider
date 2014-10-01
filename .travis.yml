@@ -15,6 +15,7 @@ script:
 deploy:
   provider: heroku
   all_branches: true
+  skip_cleanup: true
   api_key:
     secure: qj5EPGLJmcdiK6XbfBN9B7UCBelBJnB49alkCGneOdxmFJTgMK+nyXqw69aHJYyioSJYIOchSQXBvD0U6jfqQu6I18nRPqIQoH+4xD+XtPiIiyfxsWrq9eus/CSKQQ+xE0AyjuSooUjBlVoAuZMc64ujIeuhDZf36q189xwF5a0=
   app: ng-range-slider
