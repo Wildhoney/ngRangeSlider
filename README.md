@@ -32,7 +32,7 @@ For the styles please refer to the `Default.css` document in the example, as thi
 <section data-range-slider ng-model="range"></section>
 ```
 
-You're also able to apply the `min` and `max` attributes &ndash; and these may also be changed after the directive has been initialised.
+You're also able to apply the `min`, `max`, and `step` attributes &ndash; and these may also be changed after the directive has been initialised.
 
 ```html
 <section data-range-slider ng-model="range" min="minValue" max="maxValue"></section>
