@@ -1,5 +1,10 @@
 (function() {
 
+    var mainModule = 'components/ngRangeSlider.js',
+        vendorDest = 'example/js/vendor/ng-range-slider',
+        devDist    = 'ng-range-slider.js',
+        minDist    = 'ng-range-slider.min.js';
+
     var gulp   = require('gulp'),
         uglify = require('gulp-uglify'),
         rename = require('gulp-rename'),
@@ -7,11 +12,11 @@
         jshint = require('gulp-jshint');
 
     gulp.task('build', function(){
-        gulp.src('components/ngRangeSlider.js')
-            .pipe(rename('ng-range-slider.js'))
+        gulp.src(mainModule)
+            .pipe(rename(devDist))
             .pipe(gulp.dest('dist'))
-            .pipe(gulp.dest('example/js/vendor/ng-range-slider'))
-            .pipe(rename('ng-range-slider.min.js'))
+            .pipe(gulp.dest(vendorDest))
+            .pipe(rename(minDist))
             .pipe(uglify())
             .pipe(gulp.dest('dist'))
     });
@@ -22,22 +27,20 @@
             'example/js/vendor/angular/angular.js',
             'example/js/vendor/angular-mocks/angular-mocks.js',
             'tests/Spec.js',
-            'components/ngRangeSlider.js'
+            mainModule
         ];
 
-        return gulp.src(testFiles)
-            .pipe(karma({
+        return gulp.src(testFiles).pipe(karma({
                 configFile: 'karma.conf.js',
                 action: 'run'
-            }))
-            .on('error', function(err) {
-                throw err;
+            })).on('error', function(error) {
+                throw error;
             });
     });
 
     gulp.task('hint', function() {
 
-        return gulp.src('components/ngRangeSlider.js')
+        return gulp.src(mainModule)
             .pipe(jshint('.jshintrc'))
             .pipe(jshint.reporter('default'));
     });
