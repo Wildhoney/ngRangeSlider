@@ -6,6 +6,7 @@ module.exports = function(config) {
         files: [
             'example/js/vendor/angular/angular.js',
             'example/js/vendor/angular-mocks/angular-mocks.js',
+            'node_modules/jquery/dist/jquery.js',
             'tests/Spec.js',
             'components/ngRangeSlider.js'
         ],
