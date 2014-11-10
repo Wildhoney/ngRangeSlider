@@ -64,7 +64,7 @@
              * @property template
              * @type {String}
              */
-            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /></section>',
+            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model.from" min="{{_min}}" max="{{_max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model.to" min="{{_min}}" max="{{_max}}" step="{{_step}}" /></section>',
 
             /**
              * @property replace
@@ -103,7 +103,7 @@
                  * @type {Array}
                  * @private
                  */
-                scope._model = [scope.model.from, scope.model.to];
+                scope._model = model;
 
                 /**
                  * @property _min
@@ -181,12 +181,12 @@
                     if ($angular.isArray(scope.model)) {
 
                         // Developer defined an array.
-                        scope.model = [model[0], model[1]];
+                        scope.model = model;
 
                     } else {
 
                         // Otherwise it's an object.
-                        scope.model = { from: model[0], to: model[1] };
+                        scope.model = model;
 
                     }
 
@@ -215,17 +215,17 @@
                 // Observe the `_model` for any changes.
                 scope.$watchCollection('_model', function modelChanged() {
 
-                    scope._model[0] = $window.parseInt(scope._model[0]);
-                    scope._model[1] = $window.parseInt(scope._model[1]);
+                    scope._model.from = $window.parseInt(scope._model.from);
+                    scope._model.to = $window.parseInt(scope._model.to);
 
                     // User was moving the first slider.
-                    if (scope._which === 0 && scope._model[1] < scope._model[0]) {
-                        scope._model[1] = scope._model[0];
+                    if (scope._which === 0 && scope._model.to < scope._model.from) {
+                        scope._model.to = scope._model.from;
                     }
 
                     // Otherwise they were moving the second slider.
-                    if (scope._which === 1 && scope._model[0] > scope._model[1]) {
-                        scope._model[0] = scope._model[1];
+                    if (scope._which === 1 && scope._model.from > scope._model.to) {
+                        scope._model.from = scope._model.to;
                     }
 
                     // Update the model!
