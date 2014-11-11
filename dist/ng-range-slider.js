@@ -38,13 +38,23 @@
                 };
 
                 /**
+                 * @method _notInRunLoop
+                 * @return {Boolean}
+                 * @private
+                 */
+                $scope._notInRunLoop = function _notInRunLoop() {
+                    return !!$scope.$root.$$phase;
+                };
+
+                /**
                  * Determines whether Underscore/Lo-Dash is available, and the `throttle` method is available
                  * on the object.
                  *
-                 * @method supportThrottle
+                 * @method _supportThrottle
                  * @return {Boolean}
+                 * @private
                  */
-                $scope.supportThrottle = function supportThrottle() {
+                $scope._supportThrottle = function _supportThrottle() {
                     return ($angular.isDefined(_) && typeof _.throttle === 'function');
                 };
 
@@ -54,7 +64,7 @@
              * @property template
              * @type {String}
              */
-            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /></section>',
+            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model.from" min="{{_min}}" max="{{_max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model.to" min="{{_min}}" max="{{_max}}" step="{{_step}}" /></section>',
 
             /**
              * @property replace
@@ -90,10 +100,10 @@
 
                 /**
                  * @property _model
-                 * @type {Array}
+                 * @type {Object}
                  * @private
                  */
-                scope._model = [scope.model.from, scope.model.to];
+                scope._model = scope.model;
 
                 /**
                  * @property _min
@@ -132,8 +142,12 @@
                         inputElement = $angular.element(inputElement);
 
                         inputElement.val('');
-                        inputElement.val(scope._model[index]);
 
+                        if (index === 0) {
+                            inputElement.val(scope._model.from);    
+                        } else if (index === 1) {
+                            inputElement.val(scope._model.to);
+                        }
                     });
 
                 };
@@ -159,59 +173,67 @@
                 scope._which = 0;
 
                 /**
-                 * @property isThrottling
-                 * @type {Boolean}
-                 */
-                var isThrottling = false;
-
-                /**
-                 * @method _alterModel
+                 * @method _updateModel
                  * @param model {Object}
                  * @return {void}
                  * @private
                  */
-                var _alterModel = function _alterModel(model) {
+                var _updateModel = function _updateModel(model) {
 
-                    // Voila!
-                    scope.model = { from: model[0], to: model[1] };
+                    // Et voila...
 
-                    if (!scope.$root.$$phase) {
+                    if ($angular.isObject(scope.model)) {
 
-                        // Sometimes we're outside of the Angular run-loop, and therefore need to manually
-                        // invoke the `apply` method!
-                        scope.$apply();
+                        // Developer defined an array.
+                        scope.model = model;
+
+                    } else {
+
+                        // Otherwise it's an object.
+                        scope.model = model;
+
+                    }
+
+                    if (scope._notInRunLoop()) {
+
+                        try {
+
+                            // Sometimes we're outside of the Angular run-loop, and therefore need to manually
+                            // invoke the `apply` method!
+                            scope.$apply();
+
+                        } catch(e) {}
 
                     }
 
                 };
 
-                if (scope.throttle && scope.supportThrottle()) {
+                if (scope.throttle && scope._supportThrottle()) {
 
                     // Use the throttled version if we support it, and the developer has defined
                     // the throttle attribute.
-                    isThrottling = true;
-                    _alterModel  = _.throttle(_alterModel, $window.parseInt(scope.throttle));
+                    _updateModel = _.throttle(_updateModel, $window.parseInt(scope.throttle));
 
                 }
 
                 // Observe the `_model` for any changes.
                 scope.$watchCollection('_model', function modelChanged() {
 
-                    scope._model[0] = $window.parseInt(scope._model[0]);
-                    scope._model[1] = $window.parseInt(scope._model[1]);
+                    scope._model.from = $window.parseInt(scope._model.from);
+                    scope._model.to = $window.parseInt(scope._model.to);
 
                     // User was moving the first slider.
-                    if (scope._which === 0 && scope._model[1] < scope._model[0]) {
-                        scope._model[1] = scope._model[0];
+                    if (scope._which === 0 && scope._model.to < scope._model.from) {
+                        scope._model.to = scope._model.from;
                     }
 
                     // Otherwise they were moving the second slider.
-                    if (scope._which === 1 && scope._model[0] > scope._model[1]) {
-                        scope._model[0] = scope._model[1];
+                    if (scope._which === 1 && scope._model.from > scope._model.to) {
+                        scope._model.from = scope._model.to;
                     }
 
                     // Update the model!
-                    _alterModel(scope._model);
+                    _updateModel(scope._model);
 
                 });
 
