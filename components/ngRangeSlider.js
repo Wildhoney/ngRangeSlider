@@ -100,10 +100,10 @@
 
                 /**
                  * @property _model
-                 * @type {Array}
+                 * @type {Object}
                  * @private
                  */
-                scope._model = model;
+                scope._model = scope.model;
 
                 /**
                  * @property _min
