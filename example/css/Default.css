@@ -54,3 +54,36 @@ section.range-slider input:last-of-type::-moz-range-track {
     background: none transparent;
     border: 0;
 }
+
+ul.from-to {
+    display: block;
+    list-style-type: none;
+    margin-top: 10px;
+    font-family: Arial, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+ul.from-to li {
+    margin-bottom: 1px;
+}
+
+ul.from-to li label {
+    background-color: rgba(0, 0, 0, .1);
+    height: 24px;
+    line-height: 24px;
+    display: inline-block;
+    width: 60px;
+    padding: 0 10px;
+    float: left;
+    font-size: 9px;
+    color: rgba(0, 0, 0, .25);
+    text-transform: uppercase;
+}
+
+ul.from-to li input {
+    border: 1px solid rgba(0, 0, 0, .1);
+    padding: 0 8px;
+    height: 24px;
+    line-height: 24px;
+    outline: none;
+}
