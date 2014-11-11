@@ -142,8 +142,12 @@
                         inputElement = $angular.element(inputElement);
 
                         inputElement.val('');
-                        inputElement.val(scope._model[index]);
 
+                        if (index === 0) {
+                            inputElement.val(scope._model.from);    
+                        } else if (index === 1) {
+                            inputElement.val(scope._model.to);
+                        }
                     });
 
                 };
@@ -178,7 +182,7 @@
 
                     // Et voila...
 
-                    if ($angular.isArray(scope.model)) {
+                    if ($angular.isObject(scope.model)) {
 
                         // Developer defined an array.
                         scope.model = model;
