@@ -38,13 +38,23 @@
                 };
 
                 /**
+                 * @method _notInRunLoop
+                 * @return {Boolean}
+                 * @private
+                 */
+                $scope._notInRunLoop = function _notInRunLoop() {
+                    return !$scope.$root.$$phase;
+                };
+
+                /**
                  * Determines whether Underscore/Lo-Dash is available, and the `throttle` method is available
                  * on the object.
                  *
-                 * @method supportThrottle
+                 * @method _supportThrottle
                  * @return {Boolean}
+                 * @private
                  */
-                $scope.supportThrottle = function supportThrottle() {
+                $scope._supportThrottle = function _supportThrottle() {
                     return ($angular.isDefined(_) && typeof _.throttle === 'function');
                 };
 
@@ -54,7 +64,7 @@
              * @property template
              * @type {String}
              */
-            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_min}}" max="{{_max}}" step="{{_step}}" /></section>',
+            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_values.min}}" max="{{_values.max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_values.min}}" max="{{_values.max}}" step="{{_step}}" /></section>',
 
             /**
              * @property replace
@@ -96,18 +106,11 @@
                 scope._model = [scope.model.from, scope.model.to];
 
                 /**
-                 * @property _min
-                 * @type {Number}
+                 * @property _values
+                 * @type {Object}
                  * @private
                  */
-                scope._min = scope.min || 0;
-
-                /**
-                 * @property _max
-                 * @type {Number}
-                 * @private
-                 */
-                scope._max = scope.max || 100;
+                scope._values = { min: scope.min || 0, max: scope.max || 100 };
 
                 /**
                  * @property _step
@@ -138,15 +141,11 @@
 
                 };
 
-                scope.$watch('min', function alteredMin() {
-                    scope._min = scope.min;
+                // Listen for any changes to the original model.
+                scope.$watch('model', function alteredValues() {
+                    scope._model = [scope.model.from, scope.model.to];
                     _reevaluateInputs();
-                });
-
-                scope.$watch('max', function alteredMax() {
-                    scope._max = scope.max;
-                    _reevaluateInputs();
-                });
+                }, true);
 
                 /**
                  * Responsible for determining which slider the user was moving, which help us resolve
@@ -159,38 +158,46 @@
                 scope._which = 0;
 
                 /**
-                 * @property isThrottling
-                 * @type {Boolean}
-                 */
-                var isThrottling = false;
-
-                /**
-                 * @method _alterModel
+                 * @method _updateModel
                  * @param model {Object}
                  * @return {void}
                  * @private
                  */
-                var _alterModel = function _alterModel(model) {
+                var _updateModel = function _updateModel(model) {
 
-                    // Voila!
-                    scope.model = { from: model[0], to: model[1] };
+                    // Et voila...
 
-                    if (!scope.$root.$$phase) {
+                    if ($angular.isArray(scope.model)) {
 
-                        // Sometimes we're outside of the Angular run-loop, and therefore need to manually
-                        // invoke the `apply` method!
-                        scope.$apply();
+                        // Developer defined an array.
+                        scope.model = [model[0], model[1]];
+
+                    } else {
+
+                        // Otherwise it's an object.
+                        scope.model = { from: model[0], to: model[1] };
+
+                    }
+
+                    if (scope._notInRunLoop()) {
+
+                        try {
+
+                            // Sometimes we're outside of the Angular run-loop, and therefore need to manually
+                            // invoke the `apply` method!
+                            scope.$apply();
+
+                        } catch(e) {}
 
                     }
 
                 };
 
-                if (scope.throttle && scope.supportThrottle()) {
+                if (scope.throttle && scope._supportThrottle()) {
 
                     // Use the throttled version if we support it, and the developer has defined
                     // the throttle attribute.
-                    isThrottling = true;
-                    _alterModel  = _.throttle(_alterModel, $window.parseInt(scope.throttle));
+                    _updateModel = _.throttle(_updateModel, $window.parseInt(scope.throttle));
 
                 }
 
@@ -211,7 +218,7 @@
                     }
 
                     // Update the model!
-                    _alterModel(scope._model);
+                    _updateModel(scope._model);
 
                 });
 
