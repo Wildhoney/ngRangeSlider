@@ -34,8 +34,8 @@
         it('Should be able to define the defaults;', function() {
 
             var scope = compileDirective().scope;
-            expect(scope._min).toEqual(0);
-            expect(scope._max).toEqual(100);
+            expect(scope._values.min).toEqual(0);
+            expect(scope._values.max).toEqual(100);
             expect(scope._step).toEqual(1);
             expect($angular.isArray(scope._model)).toBeTruthy();
 
