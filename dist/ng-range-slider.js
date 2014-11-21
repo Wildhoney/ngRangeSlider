@@ -148,6 +148,22 @@
                 }, true);
 
                 /**
+                 * Listen for when the min or max are altered.
+                 *
+                 * @method updateMinMax
+                 * @return {void}
+                 * @private
+                 */
+                var updateMinMax = function updateMinMax() {
+                    scope._values[this] = scope[this];
+                    _reevaluateInputs();
+                };
+
+                //
+                scope.$watch('min', updateMinMax.bind('min'));
+                scope.$watch('max', updateMinMax.bind('max'));
+
+                /**
                  * Responsible for determining which slider the user was moving, which help us resolve
                  * occurrences of sliders overlapping.
                  *
