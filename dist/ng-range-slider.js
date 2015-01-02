@@ -159,7 +159,7 @@
                     _reevaluateInputs();
                 };
 
-                //
+                // Listen for changes to the min/max models.
                 scope.$watch('min', updateMinMax.bind('min'));
                 scope.$watch('max', updateMinMax.bind('max'));
 
@@ -232,6 +232,27 @@
                     if (scope._which === 1 && scope._model[0] > scope._model[1]) {
                         scope._model[0] = scope._model[1];
                     }
+
+                    // Constrain to the min/max values.
+                    (function constrainMinMax() {
+
+                        if (scope._model[0] < scope._values.min) {
+                            scope._model[0] = scope._values.min
+                        }
+
+                        if (scope._model[1] < scope._values.min) {
+                            scope._model[1] = scope._values.min
+                        }
+
+                        if (scope._model[0] > scope._values.max) {
+                            scope._model[0] = scope._values.max
+                        }
+
+                        if (scope._model[1] > scope._values.max) {
+                            scope._model[1] = scope._values.max
+                        }
+
+                    })();
 
                     // Update the model!
                     _updateModel(scope._model);
