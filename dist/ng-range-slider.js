@@ -213,15 +213,15 @@
 
                     // Use the throttled version if we support it, and the developer has defined
                     // the throttle attribute.
-                    _updateModel = _.throttle(_updateModel, $window.parseInt(scope.throttle));
+                    _updateModel = _.throttle(_updateModel, $window.parseFloat(scope.throttle));
 
                 }
 
                 // Observe the `_model` for any changes.
                 scope.$watchCollection('_model', function modelChanged() {
 
-                    scope._model[0] = $window.parseInt(scope._model[0]);
-                    scope._model[1] = $window.parseInt(scope._model[1]);
+                    scope._model[0] = $window.parseFloat(scope._model[0]);
+                    scope._model[1] = $window.parseFloat(scope._model[1]);
 
                     // User was moving the first slider.
                     if (scope._which === 0 && scope._model[1] < scope._model[0]) {
