@@ -64,7 +64,18 @@
              * @property template
              * @type {String}
              */
-            template: '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist><input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_values.min}}" max="{{_values.max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_values.min}}" max="{{_values.max}}" step="{{_step}}" /></section>',
+            template: function template(element, attrs) {
+
+                var displayTicks = Boolean(attrs.ticks === 'true');
+                var inputElements = '<input list="numbers" type="range" ng-change="_which = 0" ng-model="_model[0]" min="{{_values.min}}" max="{{_values.max}}" step="{{_step}}" /><input type="range" ng-change="_which = 1" ng-model="_model[1]" min="{{_values.min}}" max="{{_values.max}}" step="{{_step}}" />';
+
+                if (displayTicks) {
+                    return '<section>' + inputElements + '</section>';
+                }
+
+                return '<section><datalist id="numbers"><option ng-repeat="index in iter(max)">{{index}}</option></datalist>' + inputElements + '</section>';
+
+            },
 
             /**
              * @property replace
